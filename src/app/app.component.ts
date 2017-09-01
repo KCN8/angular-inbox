@@ -9,7 +9,15 @@ import data from './app.data'
 export class AppComponent {
   messages = data
 
-  onselect(){
+  deletemessage() {
+      for (let i = this.messages.length-1; i >= 0; --i) {
+        if (this.messages[i].selected === true) {
+          this.messages.splice(i, 1)
+        }
+      }
+  }
+
+  onselect() {
     let messagesLength = this.messages.length
     let trueLength = this.messages.filter(messages => messages.selected === true).length
     for(let i = 0; i < this.messages.length; i++) {
@@ -21,18 +29,22 @@ export class AppComponent {
     }
   }
 
-  onclickallread(){
+  onclickread() {
     for(let i = 0; i < this.messages.length; i++) {
       if (this.messages[i].read === false) {
-        this.messages[i].read = true
+        if (this.messages[i].selected === true){
+          this.messages[i].read = true
+        }
       }
     }
   }
 
-  onclickallunread(){
+  onclickunread() {
     for(let i = 0; i < this.messages.length; i++) {
       if (this.messages[i].read === true) {
-        this.messages[i].read = false
+        if (this.messages[i].selected === true){
+          this.messages[i].read = false
+        }
       }
     }
   }
@@ -52,4 +64,5 @@ export class AppComponent {
       }
     }
   }
+
 }

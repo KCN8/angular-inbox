@@ -13,11 +13,11 @@
       <i class="fa fa-minus-square-o"(click)="onselect()"></i>
     </button>
 
-    <button (click)="onclickallread()" class="btn btn-default">
+    <button (click)="onclickread()" class="btn btn-default">
       Mark As Read
     </button>
 
-    <button (click)="onclickallunread()" class="btn btn-default">
+    <button (click)="onclickunread()" class="btn btn-default">
       Mark As Unread
     </button>
 
@@ -36,7 +36,7 @@
     </select>
 
     <button class="btn btn-default">
-      <i class="fa fa-trash-o"></i>
+      <i (click)="deletemessage()"class="fa fa-trash-o"></i>
     </button>
   </div>
 </div>
