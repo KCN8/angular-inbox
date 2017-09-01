@@ -4,12 +4,14 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { MessagesComponent } from './messages/messages.component';
 import { MessageComponent } from './messages/message/message.component';
+import { ToolbarComponent } from './toolbar/toolbar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MessagesComponent,
-    MessageComponent
+    MessageComponent,
+    ToolbarComponent
   ],
   imports: [
     BrowserModule
