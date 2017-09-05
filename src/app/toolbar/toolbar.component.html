@@ -28,7 +28,7 @@
       <option value="gschool">gschool</option>
     </select>
 
-    <select class="form-control label-select">
+    <select (change)="deleteLabel($event.target.value)" class="form-control label-select">
       <option>Remove label</option>
       <option value="dev">dev</option>
       <option value="personal">personal</option>
