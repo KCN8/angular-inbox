@@ -10,18 +10,18 @@
     </a>
 
     <button class="btn btn-default">
-      <i class="fa fa-minus-square-o"(click)="onselect()"></i>
+      <i class="fa fa-minus-square-o"(click)="onSelect()"></i>
     </button>
 
-    <button (click)="onclickread()" class="btn btn-default">
+    <button (click)="displayRead()" class="btn btn-default">
       Mark As Read
     </button>
 
-    <button (click)="onclickunread()" class="btn btn-default">
+    <button (click)="displayUnread()" class="btn btn-default">
       Mark As Unread
     </button>
 
-    <select class="form-control label-select">
+    <select (change)="addLabel($event.target.value)" class="form-control label-select">
       <option>Apply label</option>
       <option value="dev">dev</option>
       <option value="personal">personal</option>
@@ -36,7 +36,7 @@
     </select>
 
     <button class="btn btn-default">
-      <i (click)="deletemessage()"class="fa fa-trash-o"></i>
+      <i (click)="deleteMessage()"class="fa fa-trash-o"></i>
     </button>
   </div>
 </div>

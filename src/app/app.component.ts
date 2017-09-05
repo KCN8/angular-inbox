@@ -9,60 +9,70 @@ import data from './app.data'
 export class AppComponent {
   messages = data
 
-  deletemessage() {
-      for (let i = this.messages.length-1; i >= 0; --i) {
-        if (this.messages[i].selected === true) {
-          this.messages.splice(i, 1)
+  deleteMessage() {
+      let messageSelected = []
+      this.messages.forEach(message =>{
+        if(message.selected) {
+          messageSelected.push(message)
         }
-      }
+      })
+      messageSelected.forEach(message => {
+        message.hidden = true
+        message.read = true
+      })
   }
 
-  onselect() {
+  onSelect() {
     let messagesLength = this.messages.length
-    let trueLength = this.messages.filter(messages => messages.selected === true).length
-    for(let i = 0; i < this.messages.length; i++) {
-      if (this.messages[i].selected === false) {
-        this.messages[i].selected = true
+    let trueLength = this.messages.filter((messages) => messages.selected).length
+    this.messages.forEach(message => {
+      if (!message.selected) {
+        message.selected = true
       } else if (messagesLength === trueLength){
-        this.messages[i].selected = false
+        message.selected = false
       }
-    }
+    })
   }
 
-  onclickread() {
-    for(let i = 0; i < this.messages.length; i++) {
-      if (this.messages[i].read === false) {
-        if (this.messages[i].selected === true){
-          this.messages[i].read = true
-        }
+  displayRead() {
+    this.messages.forEach(message => {
+      if (!message.read && message.selected) {
+        message.read = true;
       }
-    }
+    })
   }
 
-  onclickunread() {
-    for(let i = 0; i < this.messages.length; i++) {
-      if (this.messages[i].read === true) {
-        if (this.messages[i].selected === true){
-          this.messages[i].read = false
-        }
+  displayUnread() {
+    this.messages.forEach(message => {
+      if (message.read && message.selected) {
+        message.read = !message.read;
       }
-    }
+    })
   }
 
-  togglestar(id) {
-    for(let i = 0; i < this.messages.length; i++) {
-      if (id === this.messages[i].id) {
-        this.messages[i].starred = !this.messages[i].starred
+  toggleStar(id) {
+    this.messages.forEach(message => {
+      if (id === message.id) {
+        message.starred = !message.starred;
       }
-    }
+    })
   }
 
-  togglecheckbox(id) {
-    for(let i = 0; i < this.messages.length; i++) {
-      if (id === this.messages[i].id) {
-        this.messages[i].selected = !this.messages[i].selected
+  toggleCheckbox(id) {
+    this.messages.forEach(message => {
+      if (id === message.id) {
+        message.selected = !message.selected;
       }
-    }
+    })
+  }
+
+  addLabel(label) {
+    let messageSelected = []
+    this.messages.forEach(message => {
+      if (message.selected) {
+        messageSelected.push(message)
+      }
+    })
   }
 
 }

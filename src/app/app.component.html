@@ -1,6 +1,13 @@
 <app-toolbar
-[deletemessage]="deletemessage.bind(this)"
-[onclickread]="onclickread.bind(this)"
-[onclickunread]="onclickunread.bind(this)"
-[onselect]="onselect.bind(this)"></app-toolbar>
-<app-messages [messages]='messages' [togglestar]="togglestar.bind(this)" [togglecheckbox]="togglecheckbox.bind(this)"></app-messages>
+  [addLabel]="addLabel.bind(this)"
+  [deleteMessage]="deleteMessage.bind(this)"
+  [displayRead]="displayRead.bind(this)"
+  [displayUnread]="displayUnread.bind(this)"
+  [onSelect]="onSelect.bind(this)">
+</app-toolbar>
+
+<app-messages
+  [messages]='messages'
+  [toggleStar]="toggleStar.bind(this)"
+  [toggleCheckbox]="toggleCheckbox.bind(this)">
+</app-messages>

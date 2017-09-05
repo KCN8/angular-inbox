@@ -1,3 +1,7 @@
 <div *ngFor = 'let message of messages'>
-  <app-message [message]='message' [togglestar]='togglestar' [togglecheckbox]='togglecheckbox'></app-message>
+  <app-message
+    [message]='message'
+    [toggleStar]='toggleStar'
+    [toggleCheckbox]='toggleCheckbox'>
+  </app-message>
 </div>

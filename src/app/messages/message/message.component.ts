@@ -8,8 +8,8 @@ import { Message } from './message.model';
 })
 export class MessageComponent implements OnInit {
   @Input() message: Message[];
-  @Input() togglestar: (id: number) => void;
-  @Input() togglecheckbox: (id: number) => void;
+  @Input() toggleStar: (id: number) => void;
+  @Input() toggleCheckbox: (id: number) => void;
 
   constructor() { }
 

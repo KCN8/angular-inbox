@@ -1,11 +1,16 @@
 <div class="row message"
-[ngClass]="{unread: !message.read, read: message.read, selected: message.selected}">
+[ngClass]="{
+            unread: !message.read,
+            read: message.read,
+            selected: message.selected,
+            hidden: message.hidden
+          }">
   <div class="col-xs-1">
     <div class="row">
       <div class="col-xs-2">
-        <input (click)="togglecheckbox(message.id)" type="checkbox" [checked]="message.selected"/>
+        <input (click)="toggleCheckbox(message.id)" type="checkbox" [checked]="message.selected"/>
       </div>
-      <div (click)="togglestar(message.id)" class="col-xs-2">
+      <div (click)="toggleStar(message.id)" class="col-xs-2">
         <i *ngIf='!message.starred; else starred'class="star fa fa-star-o"></i>
         <ng-template #starred>
           <i class="star fa fa-star"></i>

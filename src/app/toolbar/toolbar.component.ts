@@ -7,10 +7,11 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class ToolbarComponent implements OnInit {
   @Input() messages
-  @Input() onselect: () => void;
-  @Input() onclickread: () => void;
-  @Input() onclickunread: () => void;
-  @Input() deletemessage: () => void;
+  @Input() onSelect: () => void;
+  @Input() displayRead: () => void;
+  @Input() displayUnread: () => void;
+  @Input() deleteMessage: () => void;
+  @Input() addLabel: () => void;
   constructor() { }
 
   ngOnInit() {
