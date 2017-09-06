@@ -10,10 +10,14 @@ const baseUrl = 'https://shrouded-journey-20674.herokuapp.com/api'
 export class AppComponent implements OnInit {
 
   async ngOnInit() {
-    const data = await fetch(`${baseUrl}/messages`)
-    const res = await data.json()
-    const messages = res._embedded.messages
-    this.messages = messages
+    try {
+      const data = await fetch(`${baseUrl}/messages`)
+      const res = await data.json()
+      const messages = res._embedded.messages
+      this.messages = messages
+    } catch(err) {
+      console.log("ERROR FOOL")
+    }
   }
 
   messages = this.messages
@@ -43,23 +47,81 @@ export class AppComponent implements OnInit {
     })
   }
 
-  displayRead() {
+  async displayRead() {
+    let read = []
     this.messages.forEach(message => {
       if (!message.read && message.selected) {
-        message.read = true;
+        read.push(message.id)
+      }
+    })
+    const body = {
+      'messageIds': read,
+      'command': 'read',
+      'read': read
+    }
+    const settings = {
+      method: 'PATCH',
+      headers: {
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    }
+    const data = await fetch (`${baseUrl}/messages`, settings)
+    this.messages.forEach(message => {
+      if (!message.read && message.selected) {
+        message.read = true
       }
     })
   }
 
-  displayUnread() {
+  async displayUnread() {
+    let unread = []
     this.messages.forEach(message => {
       if (message.read && message.selected) {
-        message.read = !message.read;
+        unread.push(message.id)
+      }
+    })
+    const body = {
+      'messageIds': unread,
+      'command': 'unread',
+      'read': unread
+    }
+
+    const settings = {
+      method: 'PATCH',
+      headers: {
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    }
+    const data = await fetch (`${baseUrl}/messages`, settings)
+    this.messages.forEach(message => {
+      if (message.read && message.selected) {
+        message.read = false
       }
     })
   }
 
-  toggleStar(id) {
+  async toggleStar(id) {
+    let starred
+    this.messages.forEach(message => {
+      if (message.id === id) {
+        starred = !message.starred
+      }
+    })
+    const body = {
+      'messageIds': [ id ],
+      'command': 'star',
+      'star': starred
+    }
+    const settings = {
+      method: 'PATCH',
+      headers: {
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    }
+    const data = await fetch(`${baseUrl}/messages`, settings)
     this.messages.forEach(message => {
       if (id === message.id) {
         message.starred = !message.starred;
@@ -96,10 +158,10 @@ export class AppComponent implements OnInit {
         messageSelected.push(message)
       }
     })
-    messageSelected.forEach(message => {
-      if(message.labels.indexOf(label) !== -1) {
-        message.labels.splice(label)
-      }
+    messageSelected.forEach((message, index) => {
+      let labelIndex = message.labels.indexOf(label)
+      if(message.labels.indexOf(label) !== -1)
+        message.labels.splice(labelIndex, 1)
     })
   }
 }
