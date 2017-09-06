@@ -1,7 +1,7 @@
 <div class="row toolbar">
   <div class="col-md-12">
     <p class="pull-right">
-      <span class="badge badge">2</span>
+      <span class="badge badge">{{ allRead() }}</span>
       unread messages
     </p>
 
@@ -10,7 +10,7 @@
     </a>
 
     <button class="btn btn-default">
-      <i class="fa fa-minus-square-o" (click)="onSelect()"></i>
+      <i class="{{ changeButton() }}" (click)="onSelect()"></i>
     </button>
 
     <button (click)="displayRead()" class="btn btn-default">

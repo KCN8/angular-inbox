@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Message } from '../messages/message/message.model';
 
 @Component({
   selector: 'app-toolbar',
@@ -6,7 +7,9 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./toolbar.component.css']
 })
 export class ToolbarComponent implements OnInit {
-  @Input() messages
+  @Input() messages: Message[];
+  @Input() changeButton: () => string;
+  @Input() allRead: () => number;
   @Input() onSelect: () => void;
   @Input() displayRead: () => void;
   @Input() displayUnread: () => void;

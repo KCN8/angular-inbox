@@ -1,5 +1,6 @@
 <app-toolbar
-  [messages]='messages'
+  [changeButton]="changeButton.bind(this)"
+  [allRead]="allRead.bind(this)"
   [deleteLabel]="deleteLabel.bind(this)"
   [addLabel]="addLabel.bind(this)"
   [deleteMessage]="deleteMessage.bind(this)"

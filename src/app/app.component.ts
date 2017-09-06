@@ -11,7 +11,7 @@ export class AppComponent implements OnInit {
 
   async ngOnInit() {
     try {
-      const data = await fetch(`${localUrl}/messages`)
+      const data = await fetch(`${baseUrl}/messages`)
       const res = await data.json()
       const messages = res._embedded.messages
       this.messages = messages
@@ -22,17 +22,54 @@ export class AppComponent implements OnInit {
 
   messages = this.messages
 
-  deleteMessage() {
-      let messageSelected = []
-      this.messages.forEach(message =>{
-        if(message.selected) {
-          messageSelected.push(message)
-        }
-      })
-      messageSelected.forEach(message => {
-        message.hidden = true
-        message.read = true
-      })
+  changeButton() {
+    let messageSelected = []
+    this.messages.forEach(message => {
+      if(message.selected) {
+        messageSelected.push(message)
+      }
+    })
+    if(messageSelected.length === 0) {
+      return 'fa fa-square-o'
+    } else if(this.messages.length === messageSelected.length) {
+      return 'fa fa-check-square-o'
+    } else {
+      return 'fa fa-minus-square-o'
+    }
+  }
+
+  allRead() {
+    let read = [];
+    this.messages.forEach(message => {
+      if(!message.read) {
+        read.push(message.id)
+      }
+    })
+    return read.length
+  }
+  async deleteMessage() {
+    let messagesSelected = [];
+    this.messages.forEach(message => {
+      if(message.selected) {
+        messagesSelected.push(message.id)
+      }
+    })
+    const body = {
+      "messageIds": messagesSelected,
+      "command": "delete"
+    }
+    const settings = {
+      method: "PATCH",
+      headers: {
+        "content-type": "application/json"
+      },
+      body: JSON.stringify(body)
+    }
+    const data = await fetch(`${baseUrl}/messages`, settings)
+    const refresh = await fetch(`${baseUrl}/messages`)
+    const res = await refresh.json()
+    const messages = res._embedded.messages
+    this.messages = messages
   }
 
   onSelect() {
@@ -66,7 +103,7 @@ export class AppComponent implements OnInit {
       },
       body: JSON.stringify(body)
     }
-    const data = await fetch(`${localUrl}/messages`, settings)
+    const data = await fetch(`${baseUrl}/messages`, settings)
     this.messages.forEach(message => {
       if(!message.read && message.selected) {
         message.read = true;
@@ -93,7 +130,7 @@ export class AppComponent implements OnInit {
       },
       body: JSON.stringify(body)
     }
-    const data = await fetch(`${localUrl}/messages`, settings)
+    const data = await fetch(`${baseUrl}/messages`, settings)
     this.messages.forEach(message => {
       if(message.read && message.selected) {
         message.read = false;
@@ -120,7 +157,7 @@ export class AppComponent implements OnInit {
       },
       body: JSON.stringify(body)
     }
-    const data = await fetch(`${localUrl}/messages`, settings)
+    const data = await fetch(`${baseUrl}/messages`, settings)
     this.messages.forEach(message => {
       if (id === message.id) {
         message.starred = !message.starred;
@@ -136,31 +173,58 @@ export class AppComponent implements OnInit {
     })
   }
 
-  addLabel(label) {
+  async addLabel(label) {
     let messageSelected = []
     this.messages.forEach(message => {
-      if (message.selected) {
-        messageSelected.push(message)
+      if(message.selected) {
+        messageSelected.push(message.id)
       }
     })
-    messageSelected.forEach(message => {
-      if(message.labels.indexOf(label) === -1) {
-        message.labels.push(label)
+    const body = {
+        "messageIds": messageSelected,
+        "command": "addLabel",
+        "label": label
+      }
+    const settings = {
+      method: "PATCH",
+      headers: {
+        "content-type": "application/json"
+      },
+      body: JSON.stringify(body)
+    }
+    const data = await fetch(`${baseUrl}/messages`, settings)
+    this.messages.forEach((message, index) => {
+      if(message.labels.indexOf(label) === -1 && message.selected) {
+        message.labels.push(label);
       }
     })
   }
 
-  deleteLabel(label) {
+  async deleteLabel(label) {
     let messageSelected = []
     this.messages.forEach(message => {
       if (message.selected) {
-        messageSelected.push(message)
+        messageSelected.push(message.id)
       }
     })
-    messageSelected.forEach((message, index) => {
-      let labelIndex = message.labels.indexOf(label)
-      if(message.labels.indexOf(label) !== -1)
-        message.labels.splice(labelIndex, 1)
+    const body = {
+        "messageIds": messageSelected,
+        "command": "removeLabel",
+        "label": label
+      }
+    const settings = {
+      method: "PATCH",
+      headers: {
+        "content-type": "application/json"
+      },
+      body: JSON.stringify(body)
+    }
+    const data = await fetch(`${baseUrl}/messages`, settings)
+    this.messages.forEach((message, index) => {
+      let removeIndex = message.labels.indexOf(label)
+      if(message.labels.indexOf(label) !== -1 && message.selected) {
+        message.labels.splice(removeIndex, 1);
+      }
     })
   }
 }
