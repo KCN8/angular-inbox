@@ -11,7 +11,7 @@ export class AppComponent implements OnInit {
 
   async ngOnInit() {
     try {
-      const data = await fetch(`${baseUrl}/messages`)
+      const data = await fetch(`${localUrl}/messages`)
       const res = await data.json()
       const messages = res._embedded.messages
       this.messages = messages
@@ -48,56 +48,55 @@ export class AppComponent implements OnInit {
   }
 
   async displayRead() {
-    let read = []
+    let read = [];
     this.messages.forEach(message => {
-      if (!message.read && message.selected) {
+      if(message.selected && !message.read) {
         read.push(message.id)
       }
     })
     const body = {
-      'messageIds': read,
-      'command': 'read',
-      'read': read
+      "messageIds": read,
+      "command": "read",
+      "read": true
     }
     const settings = {
-      method: 'PATCH',
+      method: "PATCH",
       headers: {
-        'content-type': 'application/json'
+        "content-type": "application/json"
       },
       body: JSON.stringify(body)
     }
-    const data = await fetch (`${baseUrl}/messages`, settings)
+    const data = await fetch(`${localUrl}/messages`, settings)
     this.messages.forEach(message => {
-      if (!message.read && message.selected) {
-        message.read = true
+      if(!message.read && message.selected) {
+        message.read = true;
       }
     })
   }
 
   async displayUnread() {
-    let unread = []
+    let unRead = [];
     this.messages.forEach(message => {
-      if (message.read && message.selected) {
-        unread.push(message.id)
+      if(message.selected && message.read) {
+        unRead.push(message.id)
       }
     })
     const body = {
-      'messageIds': unread,
-      'command': 'unread',
-      'read': unread
-    }
-
+        "messageIds": unRead,
+        "command": "read",
+        "read": false
+      }
     const settings = {
-      method: 'PATCH',
+      method: "PATCH",
       headers: {
-        'content-type': 'application/json'
+        "content-type": "application/json"
       },
       body: JSON.stringify(body)
     }
-    const data = await fetch (`${baseUrl}/messages`, settings)
+    const data = await fetch(`${localUrl}/messages`, settings)
     this.messages.forEach(message => {
-      if (message.read && message.selected) {
-        message.read = false
+      if(message.read && message.selected) {
+        message.read = false;
       }
     })
   }
@@ -121,7 +120,7 @@ export class AppComponent implements OnInit {
       },
       body: JSON.stringify(body)
     }
-    const data = await fetch(`${baseUrl}/messages`, settings)
+    const data = await fetch(`${localUrl}/messages`, settings)
     this.messages.forEach(message => {
       if (id === message.id) {
         message.starred = !message.starred;
