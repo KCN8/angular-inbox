@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms'
 const localUrl = 'http://localhost:8082/api'
 const baseUrl = 'https://shrouded-journey-20674.herokuapp.com/api'
 
@@ -22,30 +23,62 @@ export class AppComponent implements OnInit {
 
   messages = this.messages
 
+  async onSubmit(form: NgForm) {
+    let emailBody = form.value.body;
+    let emailSubject = form.value.subject
+    const post = {
+      "body": emailBody,
+      "subject": emailSubject
+    }
+    const settings = {
+      method: "POST",
+      headers: {
+        "content-type": "application/json"
+      },
+      body: JSON.stringify(post)
+    }
+    const data = await fetch(`${baseUrl}/messages`, settings)
+    const refresh = await fetch(`${baseUrl}/messages`)
+    const res = await refresh.json()
+    const messages = res._embedded.messages
+    this.messages = messages
+    form.reset();
+  }
+
+  toggleForm() {
+    if (this.messages){
+      return ''
+    }
+  }
+
   changeButton() {
-    let messageSelected = []
-    this.messages.forEach(message => {
-      if(message.selected) {
-        messageSelected.push(message)
+    if (this.messages) {
+      let messageSelected = []
+      this.messages.forEach(message => {
+        if(message.selected) {
+          messageSelected.push(message)
+        }
+      })
+      if(messageSelected.length === 0) {
+        return 'fa fa-square-o'
+      } else if(this.messages.length === messageSelected.length) {
+        return 'fa fa-check-square-o'
+      } else {
+        return 'fa fa-minus-square-o'
       }
-    })
-    if(messageSelected.length === 0) {
-      return 'fa fa-square-o'
-    } else if(this.messages.length === messageSelected.length) {
-      return 'fa fa-check-square-o'
-    } else {
-      return 'fa fa-minus-square-o'
     }
   }
 
   allRead() {
-    let read = [];
-    this.messages.forEach(message => {
-      if(!message.read) {
-        read.push(message.id)
-      }
-    })
-    return read.length
+      let read = [];
+      if (this.messages) {
+      this.messages.forEach(message => {
+        if(!message.read) {
+          read.push(message.id)
+        }
+      })
+      return read.length
+    }
   }
   async deleteMessage() {
     let messagesSelected = [];

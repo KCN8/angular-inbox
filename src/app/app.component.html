@@ -1,13 +1,18 @@
 <app-toolbar
+  [toggleForm]="toggleForm.bind(this)"
   [changeButton]="changeButton.bind(this)"
   [allRead]="allRead.bind(this)"
   [deleteLabel]="deleteLabel.bind(this)"
   [addLabel]="addLabel.bind(this)"
   [deleteMessage]="deleteMessage.bind(this)"
   [displayRead]="displayRead.bind(this)"
-  [displayUnread]="displayUnread.bind(this)"
-  [onSelect]="onSelect.bind(this)">
+  [displayUnread]="displayUnread.bind(this)">
 </app-toolbar>
+
+<app-compose
+  [toggleForm]="toggleForm.bind(this)"
+  [onSubmit]="onSubmit.bind(this)"
+></app-compose>
 
 <app-messages
   [messages]='messages'

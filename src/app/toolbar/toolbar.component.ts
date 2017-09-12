@@ -9,6 +9,7 @@ import { Message } from '../messages/message/message.model';
 export class ToolbarComponent implements OnInit {
   @Input() messages: Message[];
   @Input() changeButton: () => string;
+  @Input() toggleForm: () => string;
   @Input() allRead: () => number;
   @Input() onSelect: () => void;
   @Input() displayRead: () => void;
@@ -16,6 +17,8 @@ export class ToolbarComponent implements OnInit {
   @Input() deleteMessage: () => void;
   @Input() addLabel: () => void;
   @Input() deleteLabel: () => void;
+  @Input() onSubmit: () => void;
+
   constructor() { }
 
   ngOnInit() {
